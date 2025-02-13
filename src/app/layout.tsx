@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 
+import { Toaster } from "@/components/ui/sonner";
+
 import { TRPCProvider } from "@/trpc/client";
 
 // ----------------------------------------------------------------------
@@ -26,6 +28,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <TRPCProvider>{children}</TRPCProvider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

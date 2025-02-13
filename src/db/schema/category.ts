@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -5,6 +6,8 @@ import {
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
+
+import { videos } from "./video";
 
 // ----------------------------------------------------------------------
 
@@ -19,3 +22,7 @@ export const categories = pgTable(
   },
   (t) => [uniqueIndex("name_idx").on(t.name)]
 );
+
+export const categoryRelations = relations(categories, ({ many }) => ({
+  videos: many(videos),
+}));
