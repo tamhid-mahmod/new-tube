@@ -1,4 +1,5 @@
 import { z as zod } from "zod";
+import { TRPCError } from "@trpc/server";
 import { eq, and, or, lt, desc } from "drizzle-orm";
 
 import { db } from "@/db";
@@ -9,6 +10,24 @@ import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 // ----------------------------------------------------------------------
 
 export const studioRouter = createTRPCRouter({
+  getOne: protectedProcedure
+    .input(zod.object({ id: zod.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      const { id: userId } = ctx.user;
+      const { id } = input;
+
+      const [video] = await db
+        .select()
+        .from(videos)
+        .where(and(eq(videos.id, id), eq(videos.userId, userId)));
+
+      if (!video) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      return video;
+    }),
+
   getMany: protectedProcedure
     .input(
       zod.object({
