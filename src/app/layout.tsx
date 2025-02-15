@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 
 import { Toaster } from "@/components/ui/sonner";
+import { ProgressBar } from "@/components/progress-bar";
 
 import { TRPCProvider } from "@/trpc/client";
 
@@ -27,6 +28,7 @@ export default function RootLayout({
     <ClerkProvider afterSignOutUrl="/">
       <html lang="en">
         <body className={inter.className}>
+          <ProgressBar />
           <TRPCProvider>{children}</TRPCProvider>
           <Toaster />
         </body>
