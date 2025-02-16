@@ -9,6 +9,7 @@ import {
 
 import { videos } from "./video";
 import { videoViews } from "./video-views";
+import { videoReactions } from "./video-reactions";
 
 // ----------------------------------------------------------------------
 
@@ -30,4 +31,5 @@ export const users = pgTable(
 export const userRelations = relations(users, ({ many }) => ({
   videos: many(videos),
   videoViews: many(videoViews),
+  videoReactions: many(videoReactions),
 }));

@@ -16,6 +16,7 @@ import {
 import { users } from "./user";
 import { categories } from "./category";
 import { videoViews } from "./video-views";
+import { videoReactions } from "./video-reactions";
 
 // ----------------------------------------------------------------------
 
@@ -63,6 +64,7 @@ export const videoRelations = relations(videos, ({ one, many }) => ({
     references: [categories.id],
   }),
   views: many(videoViews),
+  reactions: many(videoReactions),
 }));
 
 // ----------------------------------------------------------------------
