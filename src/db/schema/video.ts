@@ -14,6 +14,7 @@ import {
 } from "drizzle-zod";
 
 import { users } from "./user";
+import { comments } from "./comments";
 import { categories } from "./category";
 import { videoViews } from "./video-views";
 import { videoReactions } from "./video-reactions";
@@ -65,6 +66,7 @@ export const videoRelations = relations(videos, ({ one, many }) => ({
   }),
   views: many(videoViews),
   reactions: many(videoReactions),
+  comments: many(comments),
 }));
 
 // ----------------------------------------------------------------------

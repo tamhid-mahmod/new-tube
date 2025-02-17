@@ -8,6 +8,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { videos } from "./video";
+import { comments } from "./comments";
 import { videoViews } from "./video-views";
 import { subscriptions } from "./subscriptions";
 import { videoReactions } from "./video-reactions";
@@ -39,4 +40,5 @@ export const userRelations = relations(users, ({ many }) => ({
   subscribers: many(subscriptions, {
     relationName: "subscriptions_creator_id_fkey",
   }),
+  comments: many(comments),
 }));
