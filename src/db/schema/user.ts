@@ -9,6 +9,7 @@ import {
 
 import { videos } from "./video";
 import { videoViews } from "./video-views";
+import { subscriptions } from "./subscriptions";
 import { videoReactions } from "./video-reactions";
 
 // ----------------------------------------------------------------------
@@ -32,4 +33,10 @@ export const userRelations = relations(users, ({ many }) => ({
   videos: many(videos),
   videoViews: many(videoViews),
   videoReactions: many(videoReactions),
+  subscriptions: many(subscriptions, {
+    relationName: "subscriptions_viewer_id_fkey",
+  }),
+  subscribers: many(subscriptions, {
+    relationName: "subscriptions_creator_id_fkey",
+  }),
 }));
