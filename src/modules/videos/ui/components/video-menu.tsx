@@ -23,7 +23,11 @@ type VideoMenuProps = {
 };
 
 // TODO: implement whats left
-export function VideoMenu({ videoId, variant, onRemove }: VideoMenuProps) {
+export function VideoMenu({
+  videoId,
+  variant = "ghost",
+  onRemove,
+}: VideoMenuProps) {
   const onShare = () => {
     // TODO: change if deploy outside of VERCEL
     const fullUrl = `${

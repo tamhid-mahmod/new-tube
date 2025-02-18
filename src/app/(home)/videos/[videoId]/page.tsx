@@ -20,6 +20,10 @@ export default async function Page({ params }: Props) {
     videoId,
     limit: DEFAULT_LIMIT,
   });
+  void trpc.suggestions.getMany.prefetchInfinite({
+    videoId,
+    limit: DEFAULT_LIMIT,
+  });
 
   return (
     <HydrateClient>
