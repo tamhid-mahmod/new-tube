@@ -12,6 +12,7 @@ import { comments } from "./comments";
 import { videoViews } from "./video-views";
 import { subscriptions } from "./subscriptions";
 import { videoReactions } from "./video-reactions";
+import { commentReactions } from "./comment-reactions";
 
 // ----------------------------------------------------------------------
 
@@ -41,4 +42,5 @@ export const userRelations = relations(users, ({ many }) => ({
     relationName: "subscriptions_creator_id_fkey",
   }),
   comments: many(comments),
+  commentReactions: many(commentReactions),
 }));

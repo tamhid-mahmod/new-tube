@@ -6,6 +6,8 @@ export * from "./video";
 
 export * from "./comments";
 
+export * from "./comment-reactions";
+
 export * from "./subscriptions";
 
 export * from "./video-views";

@@ -8,6 +8,7 @@ import {
 
 import { users } from "./user";
 import { videos } from "./video";
+import { commentReactions } from "./comment-reactions";
 
 // ----------------------------------------------------------------------
 
@@ -25,7 +26,7 @@ export const comments = pgTable("comments", {
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
 });
 
-export const commentRelations = relations(comments, ({ one }) => ({
+export const commentRelations = relations(comments, ({ one, many }) => ({
   user: one(users, {
     fields: [comments.userId],
     references: [users.id],
@@ -34,6 +35,7 @@ export const commentRelations = relations(comments, ({ one }) => ({
     fields: [comments.videoId],
     references: [videos.id],
   }),
+  reactions: many(commentReactions),
 }));
 
 export const commentSelectSchema = createSelectSchema(comments);

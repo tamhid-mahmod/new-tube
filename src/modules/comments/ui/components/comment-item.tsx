@@ -2,9 +2,18 @@ import Link from "next/link";
 import { trpc } from "@/trpc/client";
 import { toast } from "sonner";
 import { useAuth, useClerk } from "@clerk/nextjs";
-import { MessageSquareIcon, MoreVerticalIcon, Trash2Icon } from "lucide-react";
+import {
+  MessageSquareIcon,
+  MoreVerticalIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
+import { cn } from "@/lib/utils";
+
+import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/user-avatar";
 import {
   DropdownMenu,
@@ -14,7 +23,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { CommentsGetManyOutput } from "../../types";
-import { Button } from "@/components/ui/button";
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +38,32 @@ export function CommentItem({ comment }: CommentItemProps) {
   const remove = trpc.comments.remove.useMutation({
     onSuccess: () => {
       toast.success("Comment deleted");
+      utils.comments.getMany.invalidate({ videoId: comment.videoId });
+    },
+    onError: (error) => {
+      toast.error("Something went wrong");
+
+      if (error.data?.code === "UNAUTHORIZED") {
+        clerk.openSignIn();
+      }
+    },
+  });
+
+  const like = trpc.commentReactions.like.useMutation({
+    onSuccess: () => {
+      utils.comments.getMany.invalidate({ videoId: comment.videoId });
+    },
+    onError: (error) => {
+      toast.error("Something went wrong");
+
+      if (error.data?.code === "UNAUTHORIZED") {
+        clerk.openSignIn();
+      }
+    },
+  });
+
+  const dislike = trpc.commentReactions.dislike.useMutation({
+    onSuccess: () => {
       utils.comments.getMany.invalidate({ videoId: comment.videoId });
     },
     onError: (error) => {
@@ -68,7 +102,44 @@ export function CommentItem({ comment }: CommentItemProps) {
           </Link>
 
           <p className="text-sm">{comment.value}</p>
-          {/* TODO: reactions */}
+
+          <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8"
+                disabled={like.isPending}
+                onClick={() => like.mutate({ commentId: comment.id })}
+              >
+                <ThumbsUpIcon
+                  className={cn(
+                    comment.viewerReaction === "like" && "fill-black"
+                  )}
+                />
+              </Button>
+              <span className="text-xs text-muted-foreground">
+                {comment.likeCount}
+              </span>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8"
+                disabled={dislike.isPending}
+                onClick={() => dislike.mutate({ commentId: comment.id })}
+              >
+                <ThumbsDownIcon
+                  className={cn(
+                    comment.viewerReaction === "dislike" && "fill-black"
+                  )}
+                />
+              </Button>
+              <span className="text-xs text-muted-foreground">
+                {comment.dislikeCount}
+              </span>
+            </div>
+          </div>
         </div>
 
         <DropdownMenu modal={false}>
