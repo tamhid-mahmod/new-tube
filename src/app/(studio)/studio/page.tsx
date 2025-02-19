@@ -6,6 +6,8 @@ import { StudioView } from "@/modules/studio/ui/views";
 
 // ----------------------------------------------------------------------
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   void trpc.studio.getMany.prefetchInfinite({
     limit: DEFAULT_LIMIT,

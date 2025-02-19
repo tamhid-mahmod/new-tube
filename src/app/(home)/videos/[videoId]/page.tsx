@@ -6,6 +6,8 @@ import { VideoView } from "@/modules/videos/ui/views";
 
 // ----------------------------------------------------------------------
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   params: Promise<{
     videoId: string;
