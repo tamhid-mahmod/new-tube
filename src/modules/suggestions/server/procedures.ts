@@ -1,6 +1,6 @@
 import { z as zod } from "zod";
 import { TRPCError } from "@trpc/server";
-import { eq, and, or, lt, desc, getTableColumns } from "drizzle-orm";
+import { eq, and, or, lt, desc, getTableColumns, not } from "drizzle-orm";
 
 import { db } from "@/db";
 import { users, videoReactions, videos, videoViews } from "@/db/schema";
@@ -39,18 +39,18 @@ export const suggestionsRouter = createTRPCRouter({
         .select({
           ...getTableColumns(videos),
           user: users,
-          viewCount: db.$count(videoViews, eq(videoViews.videoId, videoId)),
+          viewCount: db.$count(videoViews, eq(videoViews.videoId, videos.id)),
           likeCount: db.$count(
             videoReactions,
             and(
-              eq(videoReactions.videoId, videoId),
+              eq(videoReactions.videoId, videos.id),
               eq(videoReactions.type, "like")
             )
           ),
           dislikeCount: db.$count(
             videoReactions,
             and(
-              eq(videoReactions.videoId, videoId),
+              eq(videoReactions.videoId, videos.id),
               eq(videoReactions.type, "dislike")
             )
           ),
@@ -59,6 +59,8 @@ export const suggestionsRouter = createTRPCRouter({
         .innerJoin(users, eq(videos.userId, users.id))
         .where(
           and(
+            not(eq(videos.id, existingVideo.id)),
+            eq(videos.visibility, "public"),
             existingVideo.categoryId
               ? eq(videos.categoryId, existingVideo.categoryId)
               : undefined,

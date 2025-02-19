@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { formatDistanceToNow } from "date-fns";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { UserAvatar } from "@/components/user-avatar";
 
 import { UserInfo } from "@/modules/users/ui/components/user-info";
@@ -54,6 +55,21 @@ export function VideoInfo({ data, onRemove }: VideoInfoProps) {
 
       <div className="flex-shrink-0">
         <VideoMenu videoId={data.id} onRemove={onRemove} />
+      </div>
+    </div>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+export function VideoInfoSkeleton() {
+  return (
+    <div className="flex gap-3">
+      <Skeleton className="size-10 flex-shrink-0 rounded-full" />
+
+      <div className="min-w-0 flex-1 space-y-2">
+        <Skeleton className="h-5 w-[90%]" />
+        <Skeleton className="h-5 w-[70%]" />
       </div>
     </div>
   );

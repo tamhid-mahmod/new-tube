@@ -2,6 +2,8 @@ import Image from "next/image";
 
 import { formatDuration } from "@/lib/utils";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 import { THUMBNAIL_FALLBACK } from "../../constants";
 
 // ----------------------------------------------------------------------
@@ -42,6 +44,16 @@ export function VideoThumbnail({
       <div className="absolute bottom-2 right-2 px-1 py-0.5 rounded bg-black/80 text-white text-xs font-medium">
         {formatDuration(duration)}
       </div>
+    </div>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+export function VideoThumbnailSkeleton() {
+  return (
+    <div className="relative w-full overflow-hidden rounded-xl aspect-video">
+      <Skeleton className="size-full" />
     </div>
   );
 }
