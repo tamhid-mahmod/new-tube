@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 
 import { trpc } from "@/trpc/client";
+import { APP_URL } from "@/constants";
 import { snakeCaseToTitle } from "@/lib/utils";
 import { videoUpdateSchema } from "@/db/schema";
 
@@ -233,9 +234,7 @@ export function FormSectionSuspense({ videoId }: Props) {
   };
 
   // TODO: change if deploy outside of VERCEL
-  const fullUrl = `${
-    process.env.VERCEL_URL || "http://localhost:3000"
-  }/videos/${videoId}`;
+  const fullUrl = `${APP_URL || "http://localhost:3000"}/videos/${videoId}`;
 
   const onCopy = async () => {
     await navigator.clipboard.writeText(fullUrl);
